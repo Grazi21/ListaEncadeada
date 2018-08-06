@@ -1,206 +1,222 @@
 package psw2.edu.udc.listas;
 
-
-//Descrição lista 4 - Classe no passa a ser uma sub classe da lista // NO É PRIVATIVO DA LISTA , ninguem mais alem da lista utiliza//
+//Descrição Lista 5 -  tem iterador//
 
 public class ListaEncadeada {
-	
-	private class NoLista { // dentro da classe o que a classe precisa 
-		public NoLista proximo;
-		public NoLista anterior;
+	private class No {
+		public No proximo;
+		public No anterior;
 		
-		public Object dado ;// guardar qualquer classe na lista - Utilizar object
+		public Object dado;
+	};
 
+	private class ImplementaIterador implements Iterador {
+		public No noAtual;
 		
-};
-		private NoLista inicio;// primeira coisa na lista - Nó
-		private NoLista fim;
-		
-		private int tamanho = 0;
-		
-		public int getTamanho() {
-			return tamanho;
+		public ImplementaIterador(No noAtual) {
+			this.noAtual = noAtual;
 		}
 		
-		public boolean isVazia () {
-			if (tamanho==1)
-				return true;
-			return false;
+		@Override
+		public Object getObjeto() {
+			if(noAtual == null)
+				return null;
+			return noAtual.dado;
 		}
-		
-		
-public void inserirInicio(Object obj) {
-		NoLista novo = new NoLista();
-		novo.dado= obj;
+
+		@Override
+		public Object proximo() {
+			if(noAtual == null)
+				return null;
+			Object dado = noAtual.dado;
+			noAtual = noAtual.proximo;
+			return dado;
+		}
+
+		@Override
+		public Object anterior() {
+			if(noAtual == null)
+				return null;
+			Object dado = noAtual.dado;
+			noAtual = noAtual.anterior;
+			return dado;
+		}
+	}
+
+	private No inicio = null;
+	private No fim = null;
+
+	private int tamanho = 0;
+	
+	public int getTamanho() {
+		return tamanho;
+	}
+	
+	public boolean isVazia() {
+		if(tamanho == 0)
+			return true;
+		return false;
+	}
+
+	public Iterador getInicio() {
+		return new ImplementaIterador(inicio);
+	}
+	
+	public Iterador getFim() {
+		return new ImplementaIterador(fim);
+	}
+
+	public void inserirInicio(Object obj) {
+		No novo = new No();
+		novo.dado = obj;
 		novo.proximo = inicio;
 		novo.anterior = null;
 		
 		if(inicio == null) {
 			inicio = novo;
-			fim= novo;
-		}else {
-			inicio.anterior=novo;		
+			fim = novo;
+		} else {
+			inicio.anterior = novo;
 			inicio = novo;
-	}
-		
-		tamanho ++;
-}
-		
-public void inserirFim(Object obj) {
-	NoLista novo = new NoLista();
-	novo.dado= obj;
-	novo.proximo = null;
-	novo.anterior = fim;
-	
-	if(fim != null)
-		fim.proximo= novo;
-	
-	fim = novo;
-	if (inicio ==null)
-		inicio = novo;
-	tamanho ++;
-}
+		}
 
-public void inserir (Object obj, int pos) {
-	if(pos<1|| pos> tamanho+1)
-		return;
-	
-	if(pos ==1) {
-		inserirInicio(obj);
-		return;
+		tamanho++;
 	}
-	
-	if (pos == tamanho +1) {
-		inserirFim(obj);
-		return;
-	}
-	
-	NoLista novo = new NoLista();
-	novo.dado= obj;
-	novo.proximo = null;
-	novo.anterior = null;
-	
-	NoLista aux = inicio;
-	int cont = 1;
-	
-	while (cont< pos) {
-		aux = aux.proximo;
-		cont++;
-	}
-	
-	novo.anterior = aux.anterior;
-	novo.proximo= aux;
-	aux.anterior.proximo= novo;
-	aux.anterior= novo;
-	
 
-	
-	tamanho ++;	
-}
+	public void inserirFim(Object obj) {
+		No novo = new No();
+		novo.dado = obj;
+		novo.proximo = null;
+		novo.anterior = fim;
 
-		
-		
-public Object removerInicio() {
-		
-		if (inicio == null) 
-				return null;
-			
-		Object dado= inicio.dado;
-		
-		
-		if(inicio == fim) {// removendo o unico elemento da lista
-				inicio = null;
-				fim = null;
-			}else {
-				inicio.proximo.anterior= null;
-				inicio= inicio.proximo;
-			}
-		
-		tamanho --;
-		
-		return dado;
+		if (fim != null)
+			fim.proximo = novo;
 
-}	
+		fim = novo;
+		if (inicio == null)
+			inicio = novo;
 
-public Object removerFim() {
-	if (fim ==null)
-		return null;
-	
-	Object dado = fim.dado;
-	
-	if (inicio== fim) {
-		inicio = null;
-		fim = null;
-	}else {
-		fim.anterior.proximo= null;
-		fim = fim.anterior;
+		tamanho++;
 	}
-	
-	tamanho --;
-	return dado;
-	
-}
 
-public Object remover(int pos) {
-	if(pos<1|| pos> tamanho)
-		return null;
-	
-	if (pos ==1) {
-		return removerInicio();
-	}
-	
-	if (pos == tamanho) {
-		return removerFim();
-	}
-	
-	NoLista aux = inicio;
-	int cont = 1;
-	
-	while (cont< pos) {
-		aux = aux.proximo;
-		cont++;
-	}
-	
-	Object dado = aux.dado;
-	
-	aux.anterior.proximo= aux.proximo;
-	aux.proximo.anterior= aux.anterior;
-	
-	tamanho --;
-	return dado;
+	public void inserir(Object obj, int pos) {		
+		if(pos < 1 || pos > tamanho + 1)
+			return;
+		
+		if(pos == 1) { // novo inicio
+			inserirInicio(obj);
+			return;
+		}
+		
+		if(pos == tamanho + 1) { // novo fim
+			inserirFim(obj);
+			return;
+		}
+		
+		No novo = new No();
+		novo.dado = obj;
+		novo.proximo = null;
+		novo.anterior = null;
 
-}
-	
-public Object pesquisar(int pos) {
-		NoLista aux = inicio;
+		// inserir no meio da lista
+		No aux = inicio;
 		int cont = 1;
 		
-		if (tamanho ==0) 
-				return null;
-			
-		if (pos> tamanho)
-				return null;
+		while(cont < pos ) {
+			aux = aux.proximo;
+			cont++;
+		}
 		
+		novo.anterior = aux.anterior;
+		novo.proximo = aux;
+		aux.anterior.proximo = novo;
+		aux.anterior = novo;
 		
-		while (cont< pos) {
-				aux = aux.proximo;
-				cont++;
-			}
-			
-			Object dado = aux.dado;
-			tamanho --;
-			return dado;
+		tamanho++;
 	}
 
+	public Object removerInicio() {
+		if (inicio == null)
+			return null;
+
+		Object dado = inicio.dado;
+
+		if (inicio == fim) { // if(tamanho == 1)
+			inicio = null;
+			fim = null;
+		} else {
+			inicio.proximo.anterior = null;
+			inicio = inicio.proximo;
+		}
+
+		tamanho--;
+
+		return dado;
+	}
+
+	public Object removerFim() {
+		if (fim == null) 
+			return null;
+
+		Object dado = fim.dado;
+
+		if (inicio == fim) { //if(tamanho == 0)
+			inicio = null;
+			fim = null;
+		} else {
+			fim.anterior.proximo = null;
+			fim = fim.anterior;
+		}
+		tamanho--;
+
+		return dado;
+	}
+
+	public Object remover(int pos) {
+		if(pos < 1 || pos > tamanho)
+			return null;
+		
+		if(pos == 1) { // remover inicio
+			return removerInicio();
+		}
+		
+		if(pos == tamanho) { // remover o fim
+			return removerFim();
+		}
+		
+		No aux = inicio;
+		int cont = 1;
+		
+		// remover no do meio da lista
+		while(cont < pos ) {
+			aux = aux.proximo;
+			cont++;
+		}
+		
+		Object dado = aux.dado;
+		
+		aux.anterior.proximo = aux.proximo;
+		aux.proximo.anterior = aux.anterior;
+		
+		tamanho--;
+		return dado;
+	}
+
+	public Object pesquisar(int pos) {
+		No aux = inicio;
+		int cont = 1;
+
+		if (tamanho == 0)
+			return null;
+
+		if (pos > tamanho)
+			return null;
+
+		while (cont < pos) {
+			aux = aux.proximo;
+			cont++;
+		}
+
+		return aux.dado;
+	}
 }
-
-class NoLista {
-	public NoLista proximo;
-	public NoLista anterior;
-	
-	public Object dado ;// guardar qualquer classe na lista - Utilizar object
-
-	
-}
-
-
