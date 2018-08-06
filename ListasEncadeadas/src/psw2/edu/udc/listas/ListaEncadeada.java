@@ -1,6 +1,6 @@
 package psw2.edu.udc.listas;
 
-//Descrição Lista 5 -  tem iterador//
+//Descrição Lista 5 -  Possui iterador//
 
 public class ListaEncadeada {
 	private class No {
