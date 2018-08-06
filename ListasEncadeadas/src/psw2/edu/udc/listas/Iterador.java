@@ -1,9 +1,9 @@
 package psw2.edu.udc.listas;
 
-public interface Iterador {
+public interface Iterador<T> {
 	
-	Object getObjeto();
-	Object proximo();
-	Object anterior();
+	T getObjeto();
+	T proximo();
+	T anterior();
 
 }
