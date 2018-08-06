@@ -1,10 +1,18 @@
 package psw2.edu.udc.listas;
 
 
-//Descrição lista 3 - InserirInicio, InserirFim,Inserir,RemoverFim, RemoverInicio, Remover e Pesquisar Classe de nó passa ser somente vista no Pacote ** // 
-
+//Descrição lista 4 - Classe no passa a ser uma sub classe da lista // NO É PRIVATIVO DA LISTA , ninguem mais alem da lista utiliza//
 
 public class ListaEncadeada {
+	
+	private class NoLista { // dentro da classe o que a classe precisa 
+		public NoLista proximo;
+		public NoLista anterior;
+		
+		public Object dado ;// guardar qualquer classe na lista - Utilizar object
+
+		
+};
 		private NoLista inicio;// primeira coisa na lista - Nó
 		private NoLista fim;
 		
@@ -194,7 +202,5 @@ class NoLista {
 
 	
 }
-
-
 
 
